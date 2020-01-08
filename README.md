@@ -12,7 +12,7 @@ Content-Type: application/json
 
 Request body: {"bsn": "1"}
 
-#Mock Server
+# Mock Server
 Two mocked services
 - brp
     GET http://localhost/brp?bsn=1
@@ -25,10 +25,10 @@ Manually start mock server:
 
 [docker-compose -f docker/docker-compose-json-mock-server.yml up](docker/docker-compose-json-mock-server.yml)
 
-#all-in-one + mock
+# all-in-one + mock
 [docker-compose -f docker/docker-compose-all-in-one-with-json-mock.yml up](docker/docker-compose-all-in-one-with-json-mock.yml)
 
-#Issue
+# Issue
 When we use JSON expression language, with the flowable embedded engine, the JSon EL is not evaluated correctly. When I import
  the exact same BPMN flow in the [all-in-one docker image + mock server](docker/docker-compose-all-in-one-with-json-mock.yml), it works as expected. 
  

@@ -1,0 +1,26 @@
+{
+  "brp": [
+    {
+      "bsn": 1,
+      "naam": "Bas",
+      "brpID": 123
+    },
+    {
+      "bsn": 2,
+      "naam": "Willem",
+      "brpID": 456
+    }
+  ],
+  "leefsituatie": [
+    {
+      "brpID": 123,
+      "naam": "Bas",
+      "relatiestatus": "samenwonend"
+    },
+    {
+      "brpID": 456,
+      "naam": "Willem",
+      "relatiestatus": "alleenstaand"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+version: '3'
+#Flowable all-in one server with mock.
+services:
+  flowable:
+    image: flowable/all-in-one
+    ports:
+      - "8080:8080"
+  clue-json-server:
+    image: clue/json-server
+    volumes:
+      - ../src/test/resources/mock.json:/data/db.json
+    ports:
+      - "80:80"

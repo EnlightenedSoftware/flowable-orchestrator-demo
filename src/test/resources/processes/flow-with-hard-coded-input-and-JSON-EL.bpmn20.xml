@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="OrchestrationProcessJsonEL" name="OrchestrationProcessName" isExecutable="true">
+    <serviceTask id="brpHttpTask" name="bevragen BRP mock" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[GET]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[http://localhost:80/brp?bsn=2]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[brpHttpTaskResponse]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="leefsituatieHttpTask" name="bevragen leefsituatie" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[GET]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://localhost:80/leefsituatie?brpID=${brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[leefsituatieHttpTaskResponse]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-30FB8583-1DBC-4AF8-B168-C5AF4FACD5AA" sourceRef="leefsituatieHttpTask" targetRef="sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215"></sequenceFlow>
+    <endEvent id="sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215"></endEvent>
+    <startEvent id="startOrchestratorProcess" flowable:formFieldValidation="true"></startEvent>
+    <sequenceFlow id="brpTransitie" sourceRef="startOrchestratorProcess" targetRef="brpHttpTask"></sequenceFlow>
+    <sequenceFlow id="leefsituatieTransitie" sourceRef="brpHttpTask" targetRef="leefsituatieHttpTask"></sequenceFlow>
+    <textAnnotation id="sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC"></textAnnotation>
+    <association id="eindeTransitie" sourceRef="leefsituatieHttpTask" targetRef="sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC" associationDirection="None"></association>
+  </process>
+</definitions>

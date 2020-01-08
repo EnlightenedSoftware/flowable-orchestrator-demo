@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+    <process id="OrchestrationProcessFull" name="OrchestrationProcess" isExecutable="true">
+        <serviceTask id="brpHttpTask" name="bevragen BRP mock" flowable:type="http">
+            <extensionElements>
+                <flowable:field name="requestMethod">
+                    <flowable:string><![CDATA[GET]]></flowable:string>
+                </flowable:field>
+                <flowable:field name="requestUrl">
+                    <flowable:expression><![CDATA[http://localhost:80/brp?bsn=${bsn}]]></flowable:expression>
+                </flowable:field>
+                <flowable:field name="responseVariableName">
+                    <flowable:string><![CDATA[brpHttpTaskResponse]]></flowable:string>
+                </flowable:field>
+                <flowable:field name="saveResponseVariableAsJson">
+                    <flowable:string><![CDATA[true]]></flowable:string>
+                </flowable:field>
+            </extensionElements>
+        </serviceTask>
+        <serviceTask id="leefsituatieHttpTask" name="bevragen leefsituatie" flowable:type="http">
+            <extensionElements>
+                <flowable:field name="requestMethod">
+                    <flowable:string><![CDATA[GET]]></flowable:string>
+                </flowable:field>
+                <flowable:field name="requestUrl">
+                    <flowable:expression>
+                        <![CDATA[http://localhost:80/leefsituatie?brpID={brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>
+                </flowable:field>
+                <!--        <flowable:field name="requestBody">-->
+                <!--         <flowable:expression><![CDATA[id=${brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>-->
+                <!--        </flowable:field>-->
+                <flowable:field name="responseVariableName">
+                    <flowable:string><![CDATA[leefsituatieHttpTaskResponse]]></flowable:string>
+                </flowable:field>
+                <flowable:field name="saveResponseVariableAsJson">
+                    <flowable:string><![CDATA[true]]></flowable:string>
+                </flowable:field>
+            </extensionElements>
+        </serviceTask>
+        <sequenceFlow id="sid-30FB8583-1DBC-4AF8-B168-C5AF4FACD5AA" sourceRef="leefsituatieHttpTask"
+                      targetRef="sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215"></sequenceFlow>
+        <endEvent id="sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215"></endEvent>
+        <startEvent id="startBVVproces" flowable:formFieldValidation="true"></startEvent>
+        <sequenceFlow id="brpTransitie" sourceRef="startBVVproces" targetRef="brpHttpTask"></sequenceFlow>
+        <sequenceFlow id="leefsituatieTransitie" sourceRef="brpHttpTask" targetRef="leefsituatieHttpTask"></sequenceFlow>
+        <textAnnotation id="sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC"></textAnnotation>
+        <association id="eindeTransitie" sourceRef="leefsituatieHttpTask" targetRef="sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC"
+                     associationDirection="None"></association>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_OrchestrationProcess">
+        <bpmndi:BPMNPlane bpmnElement="OrchestrationProcess" id="BPMNPlane_OrchestrationProcess">
+            <bpmndi:BPMNShape bpmnElement="brpHttpTask" id="BPMNShape_brpHttpTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="315.0" y="135.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="leefsituatieHttpTask" id="BPMNShape_leefsituatieHttpTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="585.0" y="135.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215"
+                              id="BPMNShape_sid-EDFB7C57-B4B4-42D7-8F6B-3795CD40B215">
+                <omgdc:Bounds height="28.0" width="28.0" x="810.0" y="161.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="startBVVproces" id="BPMNShape_startBVVproces">
+                <omgdc:Bounds height="30.0" width="30.0" x="100.375" y="160.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC"
+                              id="BPMNShape_sid-B5526FDC-8927-4E94-85C0-89C5C07B11BC">
+                <omgdc:Bounds height="50.0" width="100.0" x="840.0" y="150.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="eindeTransitie" id="BPMNShape_eindeTransitie">
+                <omgdc:Bounds height="0.0" width="154.3515625" x="685.6484375" y="175.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="eindeTransitie" id="BPMNEdge_eindeTransitie">
+                <omgdi:waypoint x="684.9499999999999" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="839.999999999979" y="175.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="brpTransitie" id="BPMNEdge_brpTransitie">
+                <omgdi:waypoint x="130.32499970662462" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="314.9999999997964" y="175.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-30FB8583-1DBC-4AF8-B168-C5AF4FACD5AA"
+                             id="BPMNEdge_sid-30FB8583-1DBC-4AF8-B168-C5AF4FACD5AA">
+                <omgdi:waypoint x="684.9499999999675" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="810.0" y="175.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="leefsituatieTransitie" id="BPMNEdge_leefsituatieTransitie">
+                <omgdi:waypoint x="414.9499999999288" y="175.0"></omgdi:waypoint>
+                <omgdi:waypoint x="585.0" y="175.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

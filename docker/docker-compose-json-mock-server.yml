@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  clue-json-server:
+    image: clue/json-server
+    volumes:
+      - ../src/test/resources/mock.json:/data/db.json
+    ports:
+      - "80:80"

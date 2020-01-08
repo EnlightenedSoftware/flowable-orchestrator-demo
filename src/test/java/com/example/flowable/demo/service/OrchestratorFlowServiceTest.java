@@ -5,10 +5,16 @@ import java.util.Map;
 
 import org.flowable.engine.test.Deployment;
 import org.flowable.spring.impl.test.FlowableSpringExtension;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.containers.BindMode;
+import org.testcontainers.containers.FixedHostPortGenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -21,23 +27,23 @@ class OrchestratorFlowServiceTest {
     private OrchestratorFlowService orchestratorFlowService;
 
     //Mock API server(https://github.com/clue/docker-json-server)
-//    @Container
-//    private final FixedHostPortGenericContainer jsonMockServer = new FixedHostPortGenericContainer<>("clue/json-server:latest")
-//            .withClasspathResourceMapping("mock.json",
-//                    "/data/db.json",
-//                    BindMode.READ_WRITE)
-//            .withFixedExposedPort(80, 80)
-//            .waitingFor(Wait.forHttp("/"));
-//
-//    @BeforeEach
-//    void startMock() {
-//        jsonMockServer.start();
-//    }
-//
-//    @AfterEach
-//    void stopMock() {
-//        jsonMockServer.stop();
-//    }
+    @Container
+    private final FixedHostPortGenericContainer jsonMockServer = new FixedHostPortGenericContainer<>("clue/json-server:latest")
+            .withClasspathResourceMapping("mock.json",
+                    "/data/db.json",
+                    BindMode.READ_WRITE)
+            .withFixedExposedPort(80, 80)
+            .waitingFor(Wait.forHttp("/"));
+
+    @BeforeEach
+    void startMock() {
+        jsonMockServer.start();
+    }
+
+    @AfterEach
+    void stopMock() {
+        jsonMockServer.stop();
+    }
 
     @Test
     @Deployment(resources = {"processes/flow-with-hard-coded-input-without-EL.bpmn20.xml"})

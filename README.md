@@ -5,7 +5,7 @@ Part of the result of the second call is returned.
 
 The variable 'bsn' (nl gov identification id) that is used as input for the BPMN flow.
 The variable 'relatiestatus' is returned(relationship status) 
-#Usage
+# Usage
 GET http://localhost:8888/relatiestatus
 
 Content-Type: application/json

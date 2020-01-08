@@ -13,13 +13,17 @@ Content-Type: application/json
 Request body: {"bsn": "1"}
 
 #Mock Server
+Two mocked services
+- brp
+    GET http://localhost/brp?bsn=1
+- leefsituatie
+    GET http://localhost/leefsituatie?brpID=123
+
+For more details on used mock data view: [src/test/resources/mock.json](src/test/resources/mock.json)
+
 Manually start mock server:
 
 [docker-compose -f docker/docker-compose-json-mock-server.yml up](docker/docker-compose-json-mock-server.yml)
-
-[Dependency analyse](doc/dependency-analyse)
-- [all-in-one jars](doc/dependency-analyse/all-in-one.jars.txt)
-- [embedded jars](doc/dependency-analyse/all-in-one.jars.txt)
 
 #all-in-one + mock
 [docker-compose -f docker/docker-compose-all-in-one-with-json-mock.yml up](docker/docker-compose-all-in-one-with-json-mock.yml)
@@ -32,7 +36,6 @@ When we use JSON expression language, with the flowable embedded engine, the JSo
 
 See [com.example.flowable.demo.service.OrchestratorFlowServiceTest](com.example.flowable.demo.service.OrchestratorFlowServiceTest
 ) for failing unit tests. 
-
 
 HttpTask Json EL
 ```
@@ -47,3 +50,8 @@ clue-json-server_1  | GET /leefsituatie?brpID=%7BbrpHttpTaskResponse.get(0).brpI
 ```
 
 As you can see the JSon EL is not evaluated in the embedded version.
+
+
+[Dependency analyse](doc/dependency-analyse)
+- [all-in-one jars](doc/dependency-analyse/all-in-one.jars.txt)
+- [embedded jars](doc/dependency-analyse/all-in-one.jars.txt)

@@ -28,7 +28,7 @@
                 </flowable:field>
                 <flowable:field name="requestUrl">
                     <flowable:expression>
-                        <![CDATA[http://localhost:80/leefsituatie?brpID={brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>
+                        <![CDATA[http://localhost:80/leefsituatie?brpID=${brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>
                 </flowable:field>
                 <!--        <flowable:field name="requestBody">-->
                 <!--         <flowable:expression><![CDATA[id=${brpHttpTaskResponse.get(0).brpID}]]></flowable:expression>-->

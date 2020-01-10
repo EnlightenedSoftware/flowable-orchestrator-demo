@@ -25,12 +25,14 @@ Manually start mock server:
 
 [docker-compose -f docker/docker-compose-json-mock-server.yml up](docker/docker-compose-json-mock-server.yml)
 
-# all-in-one + mock
+# Flowable all-in-one standalone server + mock
 [docker-compose -f docker/docker-compose-all-in-one-with-json-mock.yml up](docker/docker-compose-all-in-one-with-json-mock.yml)
 
 # Issue
 When we use JSON expression language, with the flowable embedded engine, the JSon EL is not evaluated correctly. When I import
- the exact same BPMN flow in the [all-in-one docker image + mock server](docker/docker-compose-all-in-one-with-json-mock.yml), it works as expected. 
+ the exact same BPMN flow in the [flowable standalone all-in-one docker image + mock server](docker/docker-compose-all-in-one-with
+ -json-mock.yml
+ ), it works as expected. (Deploy docker/testJsonJuelProces.bar to test the JUEL on the standalone server)
  
  [Used flow(flow-with-hard-coded-input-and-JSON-EL.bpmn20.xml)](src/test/resources/processes/flow-with-hard-coded-input-and-JSON-EL.bpmn20.xml)
 

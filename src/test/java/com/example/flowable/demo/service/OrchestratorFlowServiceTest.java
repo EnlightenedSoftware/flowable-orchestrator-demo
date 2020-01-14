@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(FlowableSpringExtension.class)
@@ -49,6 +50,7 @@ class OrchestratorFlowServiceTest {
     @Deployment(resources = {"processes/flow-with-hard-coded-input-without-EL.bpmn20.xml"})
     void testFlowWithoutJsonEL() {
         Map<String, Object> outputVariables = orchestratorFlowService.startFlow("OrchestrationProcess");
+        assertThat(outputVariables.isEmpty()).as("process variables should be returned").isFalse();
         ArrayNode leefsituatieHttpTaskResponseJson = (ArrayNode) outputVariables.get("leefsituatieHttpTaskResponse");
         assertFalse(leefsituatieHttpTaskResponseJson.isEmpty(), "leefsituatieHttpTaskResponse should not be empty");
         String relatiestatus = leefsituatieHttpTaskResponseJson.get(0).get("relatiestatus").textValue();
